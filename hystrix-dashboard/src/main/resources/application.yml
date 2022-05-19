@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: Hystrix
+server:
+  port: 8089

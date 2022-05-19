@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ebuozturk</groupId>
+    <artifactId>ecommerce-micro</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>product-category</module>
+        <module>images</module>
+        <module>user</module>
+        <module>basket</module>
+        <module>eureka-server</module>
+        <module>order</module>
+        <module>admin-server</module>
+        <module>config-server</module>
+        <module>hystrix-dashboard</module>
+        <module>gateway-server</module>
+        <module>payment</module>
+    </modules>
+    <packaging>pom</packaging>
+
+<!--    <parent>-->
+<!--        <groupId>org.springframework.boot</groupId>-->
+<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
+<!--        <version>2.6.2</version>-->
+<!--        <relativePath/>-->
+<!--    </parent>-->
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <spring.boot.dependencies.version>2.4.11</spring.boot.dependencies.version>
+        <spring.boot.maven.plugin.version>2.6.4</spring.boot.maven.plugin.version>
+        <kotlin.version>1.6.0</kotlin.version>
+        <spring.cloud-version>2020.0.4</spring.cloud-version>
+        <spring-boot-admin.version>2.4.0</spring-boot-admin.version>
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.dependencies.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud-version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-dependencies</artifactId>
+                <version>${spring-boot-admin.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <build>
+        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.maven.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.8.0</version>
+                        <configuration>
+                            <source>16</source>
+                            <target>16</target>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <artifactId>kotlin-maven-plugin</artifactId>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <version>${kotlin.version}</version>
+                        <configuration>
+                            <compilerPlugins>
+                                <plugin>jpa</plugin>
+                            </compilerPlugins>
+                            <jvmTarget>1.8</jvmTarget>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.jetbrains.kotlin</groupId>
+                                <artifactId>kotlin-maven-noarg</artifactId>
+                                <version>${kotlin.version}</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <id>compile</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                                <configuration>
+                                    <args>
+                                        <arg>-Xskip-prerelease-check</arg>
+                                    </args>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>test-compile</id>
+                                <phase>test-compile</phase>
+                                <goals>
+                                    <goal>test-compile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
+</project>

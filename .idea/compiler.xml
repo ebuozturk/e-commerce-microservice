@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="image" />
+        <module name="basket" />
+        <module name="config-server" />
+        <module name="images" />
+        <module name="hystrix-dashboard" />
+        <module name="admin-server" />
+        <module name="gateway-server" />
+        <module name="payment" />
+        <module name="user" />
+        <module name="eureka-server" />
+        <module name="product-category" />
+        <module name="order" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="dasdas" target="16" />
+      <module name="image" target="16" />
+      <module name="wrapper" target="1.5" />
+      <module name="wrapper (1)" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="admin-server" options="" />
+      <module name="basket" options="" />
+      <module name="config-server" options="" />
+      <module name="dasdas" options="-parameters" />
+      <module name="ecommerce-micro" options="" />
+      <module name="eureka-server" options="" />
+      <module name="gateway-server" options="" />
+      <module name="hystrix-dashboard" options="" />
+      <module name="images" options="" />
+      <module name="order" options="" />
+      <module name="product-category" options="" />
+      <module name="user" options="" />
+    </option>
+  </component>
+</project>

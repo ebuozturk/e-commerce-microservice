@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: images
+  config:
+    import: optional:configserver:http://localhost:9999
+
+
+
+
