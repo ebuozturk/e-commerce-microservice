@@ -15,6 +15,7 @@
 - H2 
 - Flyway
 - JUnit 5
+- Docker
 - RabbitMQ will be added
 - Auth server will be added
 
