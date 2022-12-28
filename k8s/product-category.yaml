@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-category
+spec:
+  selector:
+    matchLabels:
+      app: product-category
+  template:
+    metadata:
+      labels:
+        app: product-category
+    spec:
+      containers:
+        - name: product-category
+          image: ebuozturk/ecommerce-product-category
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
+
+          env:
+            - name: SPRING_CONFIG_IMPORT
+              value: optional:configserver:http://config-server:9999
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka-server:8761/eureka
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "123456"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: postgres
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: create
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://ecommerce-database:5432/ecommerce_user
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-category
+spec:
+  selector:
+    app: product-category
+  ports:
+    - port: 8080
+      targetPort: 8080
