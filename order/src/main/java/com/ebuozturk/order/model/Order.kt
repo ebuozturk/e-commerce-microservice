@@ -27,13 +27,9 @@ data class Order @JvmOverloads constructor(
     @OneToMany(mappedBy = "order" ,cascade = [CascadeType.ALL])
     val orderItems: Set<OrderItem>,
 
-    @Enumerated(EnumType.ORDINAL)
-    val status: Status
 
 ){
-    constructor(createdDate: LocalDateTime, totalPrice: Double, orderAddress: OrderAddress, billAddress: OrderAddress, userId: String): this("",createdDate,totalPrice,userId,orderAddress,billAddress,HashSet(),
-        Status.PLANNING
-    )
+    constructor(createdDate: LocalDateTime, totalPrice: Double, orderAddress: OrderAddress, billAddress: OrderAddress, userId: String): this("",createdDate,totalPrice,userId,orderAddress,billAddress,HashSet())
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -65,8 +61,3 @@ data class Order @JvmOverloads constructor(
 
 }
 
-
-enum class Status(){
-    PLANNING, SHIPPING, COMPLETE, CANCELLED,UNFULFILLABLE
-
-}

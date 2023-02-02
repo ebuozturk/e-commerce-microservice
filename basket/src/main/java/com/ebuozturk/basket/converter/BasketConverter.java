@@ -37,7 +37,7 @@ public class BasketConverter {
                     .uri("http://PRODUCT-CATEGORY/v1/product/" + i.getProductId())
                     .retrieve()
                     .bodyToMono(Product.class)
-                    .block().getUnitPrice() * i.getQuantity();
+                    .block().unitPrice() * i.getQuantity();
         }).sum();
     }
 }

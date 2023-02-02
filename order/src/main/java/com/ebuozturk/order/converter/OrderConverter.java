@@ -26,13 +26,15 @@ public class OrderConverter {
                     return new OrderItemDto(
                             orderItem.getId(),
                             orderItem.getCreatedDate(),
-                            orderItem.getQuantity()
+                            orderItem.getQuantity(),
+                            orderItem.getPrice(),
+                            orderItem.getProductId(),
+                            orderItem.getStatus().toString()
 //                            productConverter.convert(orderItem.getProduct())
                     );
                 }).collect(Collectors.toList()),
                 addressConverter.convert(order.getOrderAddress()),
-                addressConverter.convert(order.getBillAddress()),
-                order.getStatus().toString()
+                addressConverter.convert(order.getBillAddress())
         );
     }
     public List<OrderDto> convert(List<Order> orderList){

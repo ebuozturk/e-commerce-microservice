@@ -47,7 +47,7 @@ public class ProductService
     public ProductDto createProduct(CreateProductRequest request) {
         MainProduct mainProduct = this.mainProductService.findById(request.mainProductId());
 
-        Set<Feature> featureList = (Set<Feature>)request.featureList().stream().map(id -> this.featureService.findById(id)).collect(Collectors.toSet());
+        Set<Feature> featureList = request.featureList().stream().map(id -> this.featureService.findById(id)).collect(Collectors.toSet());
         Store store = this.storeService.findById(request.storeId());
         Product createdProduct = (Product)this.productRepository.save(new Product(mainProduct, request
                 .unitsInStock(), request
@@ -56,7 +56,14 @@ public class ProductService
 
         createdProduct.setCreatedAt(LocalDateTime.now());
         createdProduct.setUpdatedAt(LocalDateTime.now());
-        this.productEsService.createProductEs(new ProductEs(createdProduct.getId(), mainProduct.getName(), (List)featureList.stream().map(Feature::getName).collect(Collectors.toList())));
+        this.productEsService.createProductEs(new ProductEs(createdProduct.getId(),
+                mainProduct.getName(),
+                featureList
+                        .stream()
+                        .map(Feature::getName)
+                        .collect(Collectors.toList()),
+                createdProduct.getUnitPrice()
+                ));
         return this.productConverter.convert(createdProduct);
     }
     public ProductDto updateProduct(String id, UpdateProductRequest request) {
@@ -100,6 +107,7 @@ public class ProductService
         Product product = findById(id);
         try {
             this.productRepository.delete(product);
+            this.productEsService.deleteProductEs(product.getId());
             return Boolean.valueOf(true);
         } catch (Exception e) {
             return Boolean.valueOf(false);

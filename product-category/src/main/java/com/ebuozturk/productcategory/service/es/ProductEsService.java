@@ -38,4 +38,8 @@ public class ProductEsService {
     public void createProductEs(ProductEs productEs) {
         this.productEsRepository.save(productEs);
     }
+
+    public void deleteProductEs(String id){
+        this.productEsRepository.deleteById(id);
+    }
 }

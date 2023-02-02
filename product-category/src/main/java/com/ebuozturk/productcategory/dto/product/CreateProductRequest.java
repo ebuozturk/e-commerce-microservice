@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public record CreateProductRequest(String mainProductId, Integer unitsInStock, Double unitPrice, Integer quantityPerUnit, List<String> featureList, String storeId) {
+
     public CreateProductRequest(@JsonProperty("mainProductId") String mainProductId, @JsonProperty("unitsInStock") Integer unitsInStock, @JsonProperty("unitPrice") Double unitPrice, @JsonProperty("quantityPerUnit") Integer quantityPerUnit, @JsonProperty("featureList") List<String> featureList, @JsonProperty("storeId") String storeId) {
         this.mainProductId = mainProductId;
         this.unitsInStock = unitsInStock;

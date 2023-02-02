@@ -1,6 +1,8 @@
 package com.ebuozturk.productcategory.dto.mainproduct;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CreateMainProductRequest {
 
     private String name;
@@ -9,7 +11,7 @@ public class CreateMainProductRequest {
     private String categoryId;
     private String warrantyType;
 
-    public CreateMainProductRequest( String name,  String description, String brandId, String categoryId, String warrantyType) {
+    public CreateMainProductRequest(@JsonProperty("name") String name,@JsonProperty("description") String description, @JsonProperty("brandId") String brandId,@JsonProperty("categoryId") String categoryId,@JsonProperty("warrantyType") String warrantyType) {
         super();
         this.name = name;
         this.description = description;

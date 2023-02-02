@@ -1,16 +1,16 @@
 package com.ebuozturk.order.service;
 
+import com.ebuozturk.order.client.*;
 import com.ebuozturk.order.converter.OrderConverter;
 import com.ebuozturk.order.dto.address.Address;
 import com.ebuozturk.order.dto.basket.Basket;
+import com.ebuozturk.order.dto.order.CreateOrderRequest;
 import com.ebuozturk.order.dto.order.OrderDto;
-import com.ebuozturk.order.dto.product.Product;
 import com.ebuozturk.order.exception.EmptyBasketException;
 import com.ebuozturk.order.exception.OrderNotFoundException;
 import com.ebuozturk.order.model.Order;
 import com.ebuozturk.order.model.OrderAddress;
 import com.ebuozturk.order.model.OrderItem;
-import com.ebuozturk.order.model.Status;
 import com.ebuozturk.order.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -24,11 +24,21 @@ public class OrderService {
     private final OrderRepository repository;
     private final OrderConverter converter;
     private final WebClient.Builder webClientBuilder;
+    private final UserServiceClient userServiceClient;
+    private final AddressServiceClient addressServiceClient;
+    private final BasketServiceClient basketServiceClient;
+    private final ProductServiceClient productServiceClient;
+    private final BasketProductServiceClient basketProductServiceClient;
 
-    public OrderService(OrderRepository repository, OrderConverter converter, WebClient.Builder webClientBuilder) {
+    public OrderService(OrderRepository repository, OrderConverter converter, WebClient.Builder webClientBuilder, UserServiceClient userServiceClient, AddressServiceClient addressServiceClient, BasketServiceClient basketServiceClient, ProductServiceClient productServiceClient, BasketProductServiceClient basketProductServiceClient) {
         this.repository = repository;
         this.converter = converter;
         this.webClientBuilder = webClientBuilder;
+        this.userServiceClient = userServiceClient;
+        this.addressServiceClient = addressServiceClient;
+        this.basketServiceClient = basketServiceClient;
+        this.productServiceClient = productServiceClient;
+        this.basketProductServiceClient = basketProductServiceClient;
     }
 
 
@@ -40,38 +50,20 @@ public class OrderService {
         return converter.convert(findByUserId(id));
     }
 
-    public OrderDto placeOrder(String userId,String orderAddressId,String billAddressId){
+    public OrderDto placeOrder(CreateOrderRequest request){
 
-        Boolean isUserExist = webClientBuilder.build()
-                .get()
-                .uri("http://USER/v1/user/isExist/"+userId)
-                .retrieve()
-                .bodyToMono(Boolean.class)
-                .block();
+        Boolean isUserExist = userServiceClient.doesUserExist(request.userId()).getBody();
 
         if(isUserExist){
-            Address orderAddress = webClientBuilder.build()
-                    .get()
-                    .uri("http://USER/v1/address/"+orderAddressId)
-                    .retrieve()
-                    .bodyToMono(Address.class)
-                    .block();
 
-            Address billAddress = webClientBuilder.build()
-                    .get()
-                    .uri("http://USER/v1/address/"+billAddressId)
-                    .retrieve()
-                    .bodyToMono(Address.class)
-                    .block();
-
-            Basket basket = webClientBuilder.build()
-                    .get()
-                    .uri("http://BASKET/v1/basket/"+userId)
-                    .retrieve()
-                    .bodyToMono(Basket.class)
-                    .block();
+            Basket basket = basketServiceClient.getBasketByUserId(request.userId()).getBody();
 
             if(basket.products().size()>0){
+
+                Address orderAddress = addressServiceClient.getAddressById(request.deliveryAddressId()).getBody();
+
+                Address billAddress = addressServiceClient.getAddressById(request.billAddressId()).getBody();
+
                 Order newOrder = new Order(
                         LocalDateTime.now(),
                         basket.totalPrice(),
@@ -91,19 +83,14 @@ public class OrderService {
                                 billAddress.getCity(),
                                 billAddress.getFullAddress()
                         ),
-                        userId
+                        request.userId()
                 );
 
                 basket.products().forEach(basketProduct -> {
 
                     OrderItem orderItem = new OrderItem(
                             basketProduct.quantity(),
-                            webClientBuilder.build()
-                                            .get()
-                                            .uri("http://PRODUCT-CATEGORY/v1/product/"+basketProduct.productId())
-                                                    .retrieve()
-                                                            .bodyToMono(Product.class)
-                                                                    .block().unitPrice(),
+                            productServiceClient.getById(basketProduct.productId()).getBody().unitPrice(),
                             LocalDateTime.now(),
                             newOrder,
                             basketProduct.productId()
@@ -111,10 +98,7 @@ public class OrderService {
 
                     newOrder.getOrderItems().add(orderItem);
 
-                    Void result  = webClientBuilder.build()
-                                    .delete()
-                                            .uri("http://BASKET/v1/basketProduct/"+basketProduct.id())
-                            .retrieve().bodyToMono(Void.class).block();
+                    basketProductServiceClient.deleteBasketProduct(basketProduct.id());
                 });
                 return converter.convert(repository.save(newOrder));
             }
@@ -125,19 +109,6 @@ public class OrderService {
         else{
             throw new IllegalStateException("User not found!");
         }
-    }
-
-    public OrderDto updateStatus(String orderId, Status status){
-        Order order = findById(orderId);
-        Order updateOrder =  new Order(order.getId(),
-                order.getCreatedDate(),
-                order.getTotalPrice(),
-                order.getUserId(),
-                order.getOrderAddress(),
-                order.getBillAddress(),
-                order.getOrderItems(),
-                status);
-        return converter.convert(repository.save(updateOrder));
     }
 
     public void deleteOrderById(String id) {

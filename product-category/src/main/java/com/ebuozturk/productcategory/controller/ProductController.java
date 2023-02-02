@@ -35,12 +35,12 @@ public class ProductController {
     }
 
     @GetMapping({"{id}"})
-    public ResponseEntity<ProductDto> getById(@PathVariable String id) {
+    public ResponseEntity<ProductDto> getById(@PathVariable("id") String id) {
         return ResponseEntity.ok(this.productService.getById(id));
     }
 
     @GetMapping({"/category/{categoryId}"})
-    public ResponseEntity<List<ProductDto>> getAllByCategoryId(@PathVariable String categoryId) {
+    public ResponseEntity<List<ProductDto>> getAllByCategoryId(@PathVariable("categoryId") String categoryId) {
         return ResponseEntity.ok(this.productService.getAllProductsByCategoryId(categoryId));
     }
 
@@ -65,17 +65,17 @@ public class ProductController {
     }
 
     @PutMapping({"{id}"})
-    public ResponseEntity<ProductDto> updateProduct(@PathVariable String id, @Valid @RequestBody UpdateProductRequest request) {
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable("id") String id, @Valid @RequestBody UpdateProductRequest request) {
         return ResponseEntity.ok(this.productService.updateProduct(id, request));
     }
 
     @PutMapping({"/updateUnitsInStock/{id}"})
-    public ResponseEntity<ProductDto> updateProductUnitsInStock(@PathVariable String id, @RequestParam("unitsInStock") Integer unitsInStock) {
+    public ResponseEntity<ProductDto> updateProductUnitsInStock(@PathVariable("id") String id, @RequestParam("unitsInStock") Integer unitsInStock) {
         return ResponseEntity.ok(this.productService.updateUnitsInStock(id, unitsInStock));
     }
 
     @DeleteMapping({"{id}"})
-    public ResponseEntity<Boolean> deleteProduct(@PathVariable String id) {
+    public ResponseEntity<Boolean> deleteProduct(@PathVariable("id") String id) {
         return ResponseEntity.ok(this.productService.deleteById(id));
     }
 }

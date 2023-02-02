@@ -11,5 +11,4 @@ data class OrderDto @JvmOverloads constructor(
     val items: List<OrderItemDto>,
     val orderAddress: OrderAddressDto,
     val billAddress: OrderAddressDto,
-    val status:String
 ){}

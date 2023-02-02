@@ -13,16 +13,22 @@
         <module name="hystrix-dashboard" />
         <module name="admin-server" />
         <module name="gateway-server" />
-        <module name="payment" />
         <module name="user" />
         <module name="eureka-server" />
         <module name="product-category" />
         <module name="order" />
       </profile>
+      <profile name="Annotation profile for ecommerce-micro" enabled="true">
+        <sourceOutputDir name="../target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="payment-server" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="dasdas" target="16" />
       <module name="image" target="16" />
+      <module name="payment" target="16" />
       <module name="wrapper" target="1.5" />
       <module name="wrapper (1)" target="1.5" />
     </bytecodeTargetLevel>

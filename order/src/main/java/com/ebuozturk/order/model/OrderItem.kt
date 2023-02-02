@@ -18,8 +18,14 @@ data class OrderItem @JvmOverloads constructor(
     @JoinColumn(name="order_id",referencedColumnName = "id")
     val order: Order,
 
-    val productId:String
+    val productId:String,
+
+    @Enumerated(EnumType.ORDINAL)
+    val status: Status
+
 ){
+
+    constructor(quantity: Int,price: Double,createdDate: LocalDateTime,order: Order,productId: String): this("",quantity,price,createdDate,order,productId,Status.PLANNING)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -46,5 +52,10 @@ data class OrderItem @JvmOverloads constructor(
         result = 31 * result + productId.hashCode()
         return result
     }
+
+}
+
+enum class Status(){
+    PLANNING, SHIPPING, COMPLETE, CANCELLED,UNFULFILLABLE
 
 }

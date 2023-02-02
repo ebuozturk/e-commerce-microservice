@@ -1,5 +1,6 @@
 package com.ebuozturk.order.controller;
 
+import com.ebuozturk.order.dto.order.CreateOrderRequest;
 import com.ebuozturk.order.dto.order.OrderDto;
 import com.ebuozturk.order.model.Status;
 import com.ebuozturk.order.service.OrderService;
@@ -29,16 +30,8 @@ public class OrderController {
         return ResponseEntity.ok(service.getOrderById(id));
     }
     @PostMapping
-    public ResponseEntity<OrderDto> placeOrder(@RequestParam("userId") String userId,
-                                               @RequestParam("orderAddressId") String orderAddressId,
-                                               @RequestParam("billAddressId") String billAddressId
-                                               ){
-        return ResponseEntity.ok(service.placeOrder(userId,orderAddressId,billAddressId));
-    }
-
-    @PutMapping("{orderId}")
-    public ResponseEntity<OrderDto> updateOrderStatus(@PathVariable("orderId") String orderId, @RequestParam("status") String status){
-        return new ResponseEntity<>(service.updateStatus(orderId, Status.valueOf(status.toUpperCase())), HttpStatus.ACCEPTED);
+    public ResponseEntity<OrderDto> placeOrder(@RequestBody CreateOrderRequest request){
+        return ResponseEntity.ok(service.placeOrder(request));
     }
 
     @DeleteMapping("{id}")

@@ -11,6 +11,7 @@
       <set>
         <option value="$PROJECT_DIR$/dasdas/pom.xml" />
         <option value="$PROJECT_DIR$/image/pom.xml" />
+        <option value="$PROJECT_DIR$/payment/pom.xml" />
       </set>
     </option>
   </component>

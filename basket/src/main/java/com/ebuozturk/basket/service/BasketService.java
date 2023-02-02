@@ -72,7 +72,7 @@ public class BasketService {
 
         else{
 
-            if(product.getUnitsInStock() > 0) {
+            if(product.unitsInStock() > 0) {
                 basketProductService.createBasketProduct(new BasketProduct(productId, basket,amountProduct));
                 return converter.convert(basket);
             }

@@ -19,6 +19,7 @@
         <module>hystrix-dashboard</module>
         <module>gateway-server</module>
         <module>payment</module>
+        <module>payment-server</module>
     </modules>
     <packaging>pom</packaging>
 

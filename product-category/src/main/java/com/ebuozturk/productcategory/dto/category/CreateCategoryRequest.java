@@ -1,9 +1,6 @@
 package com.ebuozturk.productcategory.dto.category;
 
-import java.util.ArrayList;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 
 public class CreateCategoryRequest {
@@ -12,8 +9,10 @@ public class CreateCategoryRequest {
     private  String parentCategoryId;
     private  List<String> childCategories;
 
+    public CreateCategoryRequest(){
+
+    }
     public CreateCategoryRequest(String name, String parentCategoryId,  List<String> childCategories) {
-        super();
         this.name = name;
         this.parentCategoryId = parentCategoryId;
         this.childCategories = childCategories;

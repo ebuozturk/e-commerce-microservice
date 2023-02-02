@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/isExist/{userId}")
-    public ResponseEntity<Boolean> doesUserExist(@PathVariable String userId){
+    public ResponseEntity<Boolean> doesUserExist(@PathVariable(value = "userId") String userId){
         return ResponseEntity.ok(userService.doesUserExist(userId));
     }
 

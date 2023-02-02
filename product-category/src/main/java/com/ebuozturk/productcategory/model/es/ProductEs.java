@@ -20,13 +20,17 @@ public class ProductEs
     private String name;
     @Field(type = FieldType.Text)
     private List<String> features;
+    @Field(type = FieldType.Double)
+    private Double unitPrice;
 
     public ProductEs() {}
 
-    public ProductEs(String productId, String name, List<String> features) {
+
+    public ProductEs(String productId, String name, List<String> features, Double unitPrice) {
         this.productId = productId;
         this.name = name;
         this.features = features;
+        this.unitPrice = unitPrice;
     }
 
     public List<String> getFeatures() {
@@ -61,8 +65,22 @@ public class ProductEs
         this.productId = productId;
     }
 
+    public Double getUnitPrice() {
+        return unitPrice;
+    }
 
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    @Override
     public String toString() {
-        return "EsProduct{id='" + this.id + "', productId='" + this.productId + "', name='" + this.name + "'}";
+        return "ProductEs{" +
+                "id='" + id + '\'' +
+                ", productId='" + productId + '\'' +
+                ", name='" + name + '\'' +
+                ", features=" + features +
+                ", unitPrice=" + unitPrice +
+                '}';
     }
 }
